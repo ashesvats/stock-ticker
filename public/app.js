@@ -31,7 +31,14 @@
     });
 
     WS.addEventListener("message", (data) => {
-        console.log("Got message", data.data);
+        try {
+            const json = JSON.parse(data.data)
+            console.log("Got message", json);
+            StockComponent().update(json.name, json.update.change, json.update.creaateAt)
+        } catch (error) {
+            console.error("Error in message...", error)
+        }
+
     });
 
     const stocks = await getStocks()
@@ -99,7 +106,7 @@ function StockComponent(params) {
 
         },
         update: function (name, price, updatedAt) {
-            const elem = docuemnt.getElementById("price_" + name)
+            const elem = document.getElementById("price_" + name)
 
             if (!elem) return undefined
 

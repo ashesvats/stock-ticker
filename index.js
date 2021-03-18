@@ -5,7 +5,7 @@ const Storage = require('./src/lib/db')
 const WebSocket = require('ws');
 const http = require('http')
 const cookieParser = require('cookie-parser')
-var expressWs = require('express-ws')(app);
+const expressWs = require('express-ws')(app);
 
 //const mustacheExpress = require('mustache-express');
 const assert = require('assert')

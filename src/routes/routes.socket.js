@@ -4,7 +4,7 @@ const Router = express.Router()
 const Stocks = require('../lib/stocks')
 const authMiddleware = require('../middleware/middleware.auth')
 const Clients = require('../lib/clients')
-
+const uuid = require('uuid')
 // store created stocks
 const StockStorage = new Stocks()
 
@@ -26,8 +26,8 @@ Router.ws('/ws', async function (ws, req) {
 async function handleClient(req, ws) {
     const session = req.session
     console.log("session", session)
-    uuid = uuid.v4()
-    const client = Clients.add(uuid, ws)
+    const id = uuid.v4()
+    const client = Clients.add(id, ws)
 }
 module.exports = Router
 
@@ -37,7 +37,6 @@ module.exports = Router
 
 
 StockStorage.on("update", async (value) => {
-    console.log("Brodcasting share change ", value)
     await Clients.Broadcast(value)
 })
 
@@ -61,7 +60,7 @@ const interval = setInterval(() => {
     for (const st of share_array) {
         const a = StockStorage.UpdateShare(st, random(100.3).toFixed(4))
     }
-}, 1000);
+}, 5000);
 
 
 

@@ -12,10 +12,15 @@ function addClient(id, ws) {
 }
 
 async function Broadcast(message) {
-    console.log("Brodcasting message")
+    const lastMsg = message.history[message.history.length - 1]
+
+    const share = {
+        name: message.name,
+        update: lastMsg
+    }
     for (const [key, value] of this.storage.entries()) {
         const client = this.storage.get(key)
-        client.send(message)
+        client.send(JSON.stringify(share))
     }
     return Promise.resolve(true)
 }
