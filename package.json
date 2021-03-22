@@ -13,11 +13,13 @@
     "cookie-parser": "^1.4.5",
     "express": "^4.17.1",
     "express-session": "^1.17.1",
+    "express-validation": "^3.0.8",
     "express-validator": "^6.10.0",
     "express-ws": "^4.0.0",
     "expressjs": "^1.0.1",
     "jsonwebtoken": "^8.5.1",
     "lodash": "^4.17.21",
+    "lokijs": "^1.5.11",
     "mustache": "^4.1.0",
     "uuid": "^8.3.2",
     "ws": "^7.4.4"

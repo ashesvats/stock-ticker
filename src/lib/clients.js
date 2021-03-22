@@ -1,5 +1,8 @@
-function Clients() {
-    this.storage = new Map()
+const DB = require('./db')
+
+function Clients(options) {
+    this.socket = options.socket || null
+    this.channels = options.channels || null
 }
 
 Clients.prototype.add = addClient

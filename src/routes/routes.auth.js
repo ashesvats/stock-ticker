@@ -16,14 +16,20 @@ Router.post('/login', async (req, res, next) => {
     try {
         const body = req.body
 
-        const user = Users.Check(body.type, body.username, body.password)
 
-        if (!user) {
-            return res.status(401).json({ error: "AuthFailed", msg: "Incorrect username or password" })
+        const user = Users.getOne({ name: body.username })
+
+        if (!user.toObject()) {
+            return res.status(401).json({ error: "AuthFailed", msg: "Incorrect username or password !" })
         }
 
+        const verifyUser = Users.Check(body.type, body.username, body.password)
 
-        console.log(`Updating session for user ${user.id}`);
+        if (!verifyUser) {
+            return res.status(401).json({ error: "AuthFailed", msg: "Incorrect username or password !" })
+        }
+
+        console.log(`Updating session for user ${user}`);
 
 
         req.session.regenerate(function (err) {
@@ -34,14 +40,15 @@ Router.post('/login', async (req, res, next) => {
 
         req.session.userId = user.id;
 
-
-        const jwtToken = await Jwt.New({ userid: user.id }, "3$d@dfr3dF@2%g^Qp(3L", 120)
+        const jwtToken = await Jwt.New({ userid: user.id }, Jwt.ACCESS_TOKEN_SECRET, 120)
 
         if (!jwtToken) throw new Error("Unable to generate JWT token")
 
         req.session.access_token = jwtToken
 
-        req.session.refresh_token = await Jwt.New({ userid: user.id }, "fr@$mkk%45", 120 * 10)
+        req.session.refresh_token = await Jwt.New({ userid: user.id }, Jwt.REFRESH_TOKEN_SECRET, 120 * 10)
+
+        req.session.isAdmin = user.isAdmin(body.password)
 
         req.session.save(function (err) {
             // session saved
@@ -50,8 +57,11 @@ Router.post('/login', async (req, res, next) => {
             }
         })
 
+        const isAdmin = req.session.isAdmin ? "admin" : "user"
+
         console.log("session set", req.session)
-        return res.redirect("public/home.html?auth=" + jwtToken)
+
+        return res.redirect(`public/home.html?type=${isAdmin}&auth=${jwtToken}`)
     } catch (error) {
         console.log("error", error)
         return res.status(500).json({ error: error.name, msg: error })

@@ -1,11 +1,11 @@
 const express = require('express')
 const app = express()
 const Users = require('./src/lib/users')
-const Storage = require('./src/lib/db')
 const WebSocket = require('ws');
 const http = require('http')
 const cookieParser = require('cookie-parser')
 const expressWs = require('express-ws')(app);
+const DB = require('./src/lib/db')
 
 //const mustacheExpress = require('mustache-express');
 const assert = require('assert')
@@ -38,9 +38,11 @@ app.get('/', (req, res, next) => {
 
 app.use(require('./src/routes/routes.auth.js'))
 
-app.use(require('./src/routes/routes.user.js'))
 
 app.use(require('./src/middleware/middleware.auth'));
+
+app.use('/stocks', require('./src/routes/routes.stock'))
+
 app.use(require('./src/routes/routes.socket'))
 
 
@@ -74,6 +76,8 @@ async function _bootstrap() {
 
 
   assert.strictEqual(user1.isAdmin("test"), true, "User type should be admin")
+
+  console.log("Users Created", Users.List())
 
   return Promise.resolve(true)
 
