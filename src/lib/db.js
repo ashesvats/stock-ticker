@@ -33,8 +33,7 @@ function databaseInitialize() {
         const currentDate = new Date()
         console.log("current time", currentDate);
 
-        ["BBL", "ABC", "CDE", "EFG"].forEach((item) => {
-
+        ["AAPL", "MSFT", "AMZN", "GOOG", 'TSLA', 'FB'].forEach((item) => {
             const history = []
 
             // generate last five stock values

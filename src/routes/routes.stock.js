@@ -2,12 +2,17 @@ const express = require('express')
 const Router = express.Router()
 const Stocks = require('../lib/stocks')
 const { body, validationResult } = require('express-validator');
-
+const DB = require('../lib/db')
 
 
 Router.get('/', async (req, res, next) => {
     try {
-        const stock = Stocks.Get()
+        const user = DB.Users.findOne({ id: req.session.userId })
+
+        const query = { name: { "$in": user.shares_holding } }
+
+        const stock = DB.Stocks.find(query)
+
         return res.status(200).json({ error: 0, data: stock })
     } catch (error) {
         console.log("error", error)

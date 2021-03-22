@@ -59,13 +59,15 @@ async function _bootstrap() {
   const user1 = await Users.New({
     name: "john",
     type: "admin",
-    password: "test"
+    password: "test",
+    shares_holding: ["AAPL", "MSFT", "AMZN", "GOOG", 'TSLA', 'FB']
   })
 
   const user2 = await Users.New({
     name: "Joe",
     type: "user",
-    password: "test2"
+    password: "test2",
+    shares_holding: ["AAPL", "AMZN", "GOOG"]
   })
 
 

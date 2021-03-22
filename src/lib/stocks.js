@@ -16,6 +16,8 @@ function setItem(array, item, length) {
 module.exports.Get = function (name) {
     return name ? DB.Stocks.findOne({ name: name }) : DB.Stocks.find({})
 }
+
+
 module.exports.Update = function (name, price) {
     try {
         const stock = DB.Stocks.findOne({ name: name })
@@ -36,7 +38,6 @@ module.exports.Update = function (name, price) {
         stock.updatedAt = new Date()
 
         stock.history = history
-
 
         DB.Stocks.update(stock)
     } catch (error) {

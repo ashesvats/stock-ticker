@@ -7,7 +7,6 @@ const uuid = require('uuid')
 // @ts-check options {Object}
 function User(options = {}) {
 
-    console.log("options", options)
     this.name = options.name || null
 
     this.id = options.id || uuid.v4()
@@ -18,6 +17,7 @@ function User(options = {}) {
 
     this.refrshToken = options.refreshToken || null
 
+    this.shares_holding = options.shares_holding || []
     // if (!this instanceof User) return new User(options)
 
 }
@@ -52,7 +52,8 @@ User.prototype.toObject = function () {
     return {
         name: this.name,
         id: this.id,
-        hash: this.hash
+        hash: this.hash,
+        shares_holding: this.shares_holding
     }
 }
 
